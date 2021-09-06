@@ -59,6 +59,7 @@ enum ImageAsset: String {
     case remove
     case republish
     case schibstedFooter
+    case searchBig
     case snowflake
     case sort
     case spark
@@ -101,6 +102,7 @@ enum ImageAsset: String {
             .remove,
             .republish,
             .schibstedFooter,
+            .searchBig,
             .snowflake,
             .sort,
             .spark,

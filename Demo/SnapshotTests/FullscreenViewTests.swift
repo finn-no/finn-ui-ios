@@ -51,6 +51,10 @@ class FullscreenViewTests: XCTestCase {
         snapshot(.searchDropdown)
     }
 
+    func testSearchSuggestions() {
+        snapshot(.searchSuggestions)
+    }
+
     func testExploreView() {
         snapshot(.exploreView)
     }
