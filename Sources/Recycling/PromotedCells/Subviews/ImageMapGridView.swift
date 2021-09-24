@@ -10,6 +10,7 @@ class ImageMapGridView: UIView {
     private let primaryImageUrl: String
     private let secondaryImageUrl: String?
     private let mapCoordinates: CLLocationCoordinate2D?
+    private let zoomLevel: Int?
     private weak var remoteImageViewDataSource: RemoteImageViewDataSource?
 
     private lazy var primaryImageView: RemoteImageView = {
@@ -57,12 +58,14 @@ class ImageMapGridView: UIView {
         primaryImageUrl: String,
         secondaryImageUrl: String?,
         mapCoordinates: CLLocationCoordinate2D?,
+        zoomLevel: Int?,
         remoteImageViewDataSource: RemoteImageViewDataSource?
     ) {
         self.promoKind = promoKind
         self.primaryImageUrl = primaryImageUrl
         self.secondaryImageUrl = secondaryImageUrl
         self.mapCoordinates = mapCoordinates
+        self.zoomLevel = zoomLevel
         self.remoteImageViewDataSource = remoteImageViewDataSource
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +87,6 @@ class ImageMapGridView: UIView {
             secondaryImageView.dataSource = remoteImageViewDataSource
             secondaryImageView.loadImage(for: secondaryImageUrl, imageWidth: .zero)
 
-            mapView.centerToLocation(coordinates: mapCoordinates)
             mapView.addAnnotation(MapPinAnnotation(coordinate: mapCoordinates))
 
             NSLayoutConstraint.activate([
@@ -94,6 +96,19 @@ class ImageMapGridView: UIView {
         } else {
             imageAndMapStackView.isHidden = true
             primaryImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 0.6).isActive = true
+        }
+    }
+
+    // MARK: - Lifecycle
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let mapCoordinates = mapCoordinates else { return }
+        if let zoomLevel = zoomLevel {
+            mapView.layoutIfNeeded()
+            mapView.centerToLocation(coordinates: mapCoordinates, zoomLevel: zoomLevel)
+        } else {
+            mapView.centerToLocation(coordinates: mapCoordinates)
         }
     }
 
@@ -142,7 +157,15 @@ private extension MKMapView {
             latitudinalMeters: regionRadius,
             longitudinalMeters: regionRadius
         )
-        setRegion(coordinateRegion, animated: true)
+        setRegion(coordinateRegion, animated: false)
+    }
+
+    func centerToLocation(
+        coordinates: CLLocationCoordinate2D,
+        zoomLevel: Int
+    ) {
+        let span = MKCoordinateSpan(latitudeDelta: 0, longitudeDelta: 360 / pow(2, Double(zoomLevel)) * Double(frame.size.width) / 256)
+        setRegion(MKCoordinateRegion(center: coordinates, span: span), animated: false)
     }
 }
 

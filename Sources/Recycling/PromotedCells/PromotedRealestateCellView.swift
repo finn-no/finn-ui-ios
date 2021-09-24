@@ -42,6 +42,7 @@ public class PromotedRealestateCellView: UIView {
         primaryImageUrl: viewModel.primaryImageUrl,
         secondaryImageUrl: viewModel.secondaryImageUrl,
         mapCoordinates: viewModel.mapCoordinates,
+        zoomLevel: viewModel.zoomLevel,
         remoteImageViewDataSource: remoteImageViewDataSource
     )
 

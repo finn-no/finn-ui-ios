@@ -14,6 +14,7 @@ public struct PromotedRealestateCellViewModel {
     public let realtorImageUrl: String?
     public let highlightColor: UIColor?
     public let mapCoordinates: CLLocationCoordinate2D?
+    public let zoomLevel: Int?
 
     public init(
         title: String?,
@@ -27,7 +28,8 @@ public struct PromotedRealestateCellViewModel {
         realtorName: String?,
         realtorImageUrl: String?,
         highlightColor: UIColor?,
-        mapCoordinates: CLLocationCoordinate2D?
+        mapCoordinates: CLLocationCoordinate2D?,
+        zoomLevel: Int?
     ) {
         self.title = title
         self.address = address
@@ -41,5 +43,6 @@ public struct PromotedRealestateCellViewModel {
         self.realtorImageUrl = realtorImageUrl
         self.highlightColor = highlightColor
         self.mapCoordinates = mapCoordinates
+        self.zoomLevel = zoomLevel
     }
 }
